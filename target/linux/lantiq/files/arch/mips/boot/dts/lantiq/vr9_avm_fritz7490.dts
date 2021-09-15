@@ -278,7 +278,7 @@
 			};
 
 			partition@3800000 {
-				label = "ubi"; /* filesystem */
+				label = "filesystem";
 				reg = <0x3800000 0x3000000>;
 			};
 
@@ -288,7 +288,7 @@
 			};
 
 			partition@6a00000 {
-				label = "nand-filesystem";
+				label = "ubi"; /* nand-filesystem */
 				reg = <0x6a00000 0x19600000>;
 			};
 		};
