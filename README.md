@@ -8,9 +8,9 @@ Make also sure to install bspatch utility (bsdiff package).
 The SSIDs for wireless are OpenWrt and OpenWrt-5G and the pre-shared key is extracted from urlader partition as printed on the sticker on the back of the device.
 
 To create the images:
-1. `git clone https://github.com/kestrel1974/openwrt.git`
+1. `git clone https://github.com/hvegh/openwrt.git`
 2. `cd openwrt`
-3. `git checkout fritzbox7490`
+3. `git checkout for_fritzbox7490`
 4. `scripts/feeds update`
 5. `scripts/feeds install -a`
 6. `make menuconfig` - first you need to build the wasp image for the SOC with the two wifis. So select ATH79 as target system, subtarget generic and target profile AVM FRITZ!Box 7490 WASP. To enable LUCI web GUI, Enable LUCI->Collections->luci (with Uhttpd), the minimum stuff is preselected.
