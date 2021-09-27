@@ -163,12 +163,19 @@ define Device/avm_fritz5490
   $(Device/NAND)
   DEVICE_MODEL := FRITZ!Box 5490
   KERNEL_SIZE := 4096k
-  IMAGE_SIZE := 49152k
   DEVICE_PACKAGES := kmod-usb3 fritz-tffs wasp_uploader \
 	-ltq-vdsl-vr9-vectoring-fw-installer -kmod-ltq-vdsl-vr9-mei \
 	-kmod-ltq-vdsl-vr9 -kmod-ltq-atm-vr9 -kmod-ltq-ptm-vr9 \
 	-ltq-vdsl-app -kmod-owl-loader \
 	-dsl-vrx200-firmware-xdsl-a -dsl-vrx200-firmware-xdsl-b-patch
+  BLOCKSIZE := 256k
+  PAGESIZE  := 4096
+  SUBPAGESIZE  := 1024
+  UBIFS_OPTS   := -m 4096 -e 258048 -c 2047
+  UBINIZE_OPTS := -E 5
+  IMAGES += eva-kernel.bin eva-filesystem.bin
+  IMAGE/eva-kernel.bin := append-kernel
+  IMAGE/eva-filesystem.bin := append-ubi
 endef
 TARGET_DEVICES += avm_fritz5490
 
@@ -234,6 +241,10 @@ define Device/avm_fritz7490
   IMAGE_SIZE := 49152k
   DEVICE_PACKAGES := kmod-usb3 fritz-tffs wasp_uploader \
 	-kmod-owl-loader -dsl-vrx200-firmware-xdsl-a -dsl-vrx200-firmware-xdsl-b-patch
+  UBINIZE_OPTS := -E 5
+  IMAGES += eva-kernel.bin eva-filesystem.bin
+  IMAGE/eva-kernel.bin := append-kernel
+  IMAGE/eva-filesystem.bin := append-ubi
 endef
 TARGET_DEVICES += avm_fritz7490
 

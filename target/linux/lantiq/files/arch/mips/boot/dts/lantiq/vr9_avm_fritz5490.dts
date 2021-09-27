@@ -10,76 +10,66 @@
 		device_type = "memory";
 		reg = <0x0 0x20000000>;
 	};
-};
 
-&eth0 {
-	mtd-mac-address = <&urlader 0xcc>;
-	mtd-mac-address-increment = <1>;
-};
+	aliases {
+		led-boot = &led_power;
+		led-failsafe = &led_info_red;
+		led-running = &led_power;
+		led-upgrade = &led_info_red;
 
-&gswip_mdio {
-	phy0: ethernet-phy@0 {
-		status = "disabled";
+		led-dsl = &led_info_green;
+		led-internet = &led_fon;
+		led-wifi = &led_wlan;
+
+//		mdio-gpio0 = &mdio1;
 	};
 
-	phy1: ethernet-phy@1 {
-		status = "disabled";
-	};
+	leds {
+		compatible = "gpio-leds";
 
-	phy5: ethernet-phy@5 {
-		reg = <0x05>;
-	};
+		// led 5 "Power"
+		led_power: power {
+			label = "green:power";
+			gpios = <&gpio 45 GPIO_ACTIVE_LOW>;
+			default-state = "keep";
+		};
 
-	phy6: ethernet-phy@6 {
-		reg = <0x06>;
-		reset-gpios = <&gpio 32 GPIO_ACTIVE_LOW>;
-	};
+		// led 4 "Fiber"
+		led_fiber: fiber {
+			label = "green:fiber";
+			gpios = <&gpio 47 GPIO_ACTIVE_LOW>;
+		};
 
-	phy9: ethernet-phy@9 {
-		reg = <0x09>;
-	};
+		// led 3 "WLAN"
+		led_wlan: wlan {
+			label = "green:wlan";
+			gpios = <&gpio 36 GPIO_ACTIVE_LOW>;
+		};
 
-	phy11: ethernet-phy@11 {
-		status = "disabled";
-	};
+		// led 2 "Fon"
+		led_fon: fon {
+			label = "green:fon";
+			gpios = <&gpio 35 GPIO_ACTIVE_LOW>;
+		};
 
-	phy13: ethernet-phy@13 {
-		status = "disabled";
-	};
-};
-
-&gswip_ports {
-	port@0 {
-		reg = <0>;
-		label = "wan";
-		phy-mode = "rgmii-rxid";
-		phy-handle = <&phy6>;
-	};
-
-	port@1 {
-		reg = <1>;
-		label = "lan3";
-		phy-mode = "rgmii";
-
-		fixed-link {
-			speed = <1000>;
-			full-duplex;
+		// led 1 "Info"
+		led_info_green: info_green {
+			label = "green:info";
+			gpios = <&gpio 33 GPIO_ACTIVE_LOW>;
+		};
+		led_info_red: info_red {
+			label = "red:info";
+			gpios = <&gpio 46 GPIO_ACTIVE_LOW>;
 		};
 	};
 
-	port@2 {
-		reg = <2>;
-		label = "lan2";
-		phy-mode = "internal";
-		phy-handle = <&phy5>;
-	};
-
-	port@4 {
-		reg = <4>;
-		label = "lan1";
-		phy-mode = "internal";
-		phy-handle = <&phy9>;
-	};
+//	mdio1: mdio@0 {
+//		compatible = "virtual,mdio-gpio";
+//		#address-cells = <1>;
+//		#size-cells = <0>;
+//		gpios = <&gpio 43 GPIO_ACTIVE_HIGH>,	/* MDC */
+//			<&gpio 42 GPIO_ACTIVE_HIGH>;	/* MDIO */
+//	};
 };
 
 &gpio {
@@ -95,5 +85,154 @@
 		line-name = "wasp-wakeup";
 		gpios = <5 GPIO_ACTIVE_HIGH>;
 		output-high;
+	};
+};
+
+&eth0 {
+	mtd-mac-address = <&urlader 0xcc>;
+	mtd-mac-address-increment = <1>;
+};
+
+&gphy0 {
+	lantiq,gphy-mode = <GPHY_MODE_GE>;
+};
+
+&gphy1 {
+	lantiq,gphy-mode = <GPHY_MODE_GE>;
+};
+
+&gswip_mdio {
+	// lan2 - port2
+	phy5: ethernet-phy@5 {
+		reg = <0x05>;
+	};
+
+	// lan1 - port4
+	phy9: ethernet-phy@9 {
+		reg = <0x09>;
+	};
+
+	// wasp - port5
+//	phy7: ethernet-phy@7 {
+//		reg = <0x07>;
+//		reset-gpios = <&gpio 34 GPIO_ACTIVE_LOW>;
+//	};
+
+	// fiber - qca8033 (serdes transciever) - port0
+	phy6: ethernet-phy@6 {
+		reg = <0x06>;
+		reset-gpios = <&gpio 32 GPIO_ACTIVE_LOW>;
+	};
+
+// 62 lines
+	// switch - qca8334 - port1
+	switch10: switch@10 {
+		compatible = "qca,qca8334";
+		#address-cells = <1>;
+		#size-cells = <0>;
+
+		dsa,member = <0 1>;
+
+//		reg = <0x00>;
+//		reg = <0x04>;
+//		reg = <0x08>;
+		reg = <0x10>;
+//		reg = <0x12>;
+//		reg = <0x15>;
+//		reg = <0x18>;
+		reset-gpios = <&gpio 44 GPIO_ACTIVE_LOW>;
+
+		ports {
+			#address-cells = <1>;
+			#size-cells = <0>;
+
+//			port@0 {
+//				reg = <0>;
+//				label = "cpu";
+//				ethernet = <&eth0>;
+//				phy-mode = "rgmii-id";
+//				fixed-link {
+//					speed = <1000>;
+//					full-duplex;
+//				};
+//			};
+
+			port@1 {
+				reg = <1>;
+				label = "lan3";
+				phy-mode="internal";
+				phy-handle = <&phy1>;
+			};
+
+			port@2 {
+				reg = <2>;
+				label = "lan4";
+				phy-mode="internal";
+				phy-handle = <&phy2>;
+			};
+		};
+		mdio {
+			phy0: ethernet-phy@0 {
+				reg = <0x00>;
+			};
+			phy1: ethernet-phy@1 {
+				reg = <0x01>;
+			};
+			phy2: ethernet-phy@2 {
+				reg = <0x02>;
+			};
+			phy3: ethernet-phy@3 {
+				reg = <0x03>;
+			};
+			phy4: ethernet-phy@4 {
+				reg = <0x04>;
+			};
+		};
+	};
+};
+
+&gswip_ports {
+	port@0 {
+		reg = <0>;
+		label = "fiber";
+		phy-mode = "rgmii-rxid";
+		phy-handle = <&phy6>;
+	};
+
+	port@1 {
+		reg = <1>;
+		label = "switch";
+
+		phy-mode = "rgmii-id";
+		fixed-link {
+			speed = <1000>;
+			full-duplex;
+		};
+//		phy-mode = "rgmii";
+//		phy-handle = <&phy1>;
+//		phy-handle = <&switch10>;
+	};
+	port@2 {
+		reg = <2>;
+		label = "lan2";
+		phy-mode = "internal";
+		phy-handle = <&phy5>;
+	};
+
+	port@4 {
+		reg = <4>;
+		label = "lan1";
+		phy-mode = "internal";
+		phy-handle = <&phy9>;
+	};
+
+	port@5 {
+		reg = <5>;
+		label = "wasp";
+		phy-mode = "rgmii-txid";
+		fixed-link {
+			speed = <1000>;
+			full-duplex;
+		};
 	};
 };
