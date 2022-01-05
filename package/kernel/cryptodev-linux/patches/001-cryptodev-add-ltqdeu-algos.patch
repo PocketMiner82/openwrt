@@ -1,0 +1,42 @@
+--- a/crypto/cryptodev.h
++++ b/crypto/cryptodev.h
+@@ -43,6 +43,9 @@
+ 	CRYPTO_AES_XTS = 22,
+ 	CRYPTO_AES_ECB = 23,
+ 	CRYPTO_AES_GCM = 50,
++	CRYPTO_AES_CCM = 51,
++	CRYPTO_AES_CFB = 52,
++	CRYPTO_AES_OFB = 53,
+ 
+ 	CRYPTO_CAMELLIA_CBC = 101,
+ 	CRYPTO_RIPEMD160,
+--- a/ioctl.c
++++ b/ioctl.c
+@@ -147,6 +147,15 @@
+ 	case CRYPTO_AES_ECB:
+ 		alg_name = "ecb(aes)";
+ 		break;
++	case CRYPTO_AES_CFB:
++		alg_name = "cfb(aes)";
++		break;
++	case CRYPTO_AES_OFB:
++		alg_name = "ofb(aes)";
++		break;
++ 	case CRYPTO_AES_XTS:
++ 		alg_name = "xts(aes)";
++ 		break;
+ 	case CRYPTO_CAMELLIA_CBC:
+ 		alg_name = "cbc(camellia)";
+ 		break;
+@@ -159,6 +165,11 @@
+ 		stream = 1;
+ 		aead = 1;
+ 		break;
++	case CRYPTO_AES_CCM:
++		alg_name = "ccm(aes)";
++		stream = 1;
++		aead = 1;
++		break;
+ 	case CRYPTO_TLS11_AES_CBC_HMAC_SHA1:
+ 		alg_name = "tls11(hmac(sha1),cbc(aes))";
+ 		stream = 0;
