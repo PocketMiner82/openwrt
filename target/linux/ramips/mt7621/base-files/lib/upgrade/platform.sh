@@ -56,19 +56,26 @@ platform_do_upgrade() {
 	dlink,dir-1960-a1|\
 	dlink,dir-2640-a1|\
 	dlink,dir-2660-a1|\
+	dlink,dir-853-a3|\
 	hiwifi,hc5962|\
+	iptime,a3004t|\
+	iptime,t5004|\
 	jcg,q20|\
 	linksys,e5600|\
 	linksys,ea7300-v1|\
 	linksys,ea7300-v2|\
 	linksys,ea7500-v2|\
 	linksys,ea8100-v1|\
+	linksys,ea8100-v2|\
 	netgear,r6220|\
 	netgear,r6260|\
 	netgear,r6350|\
 	netgear,r6700-v2|\
 	netgear,r6800|\
 	netgear,r6850|\
+	netgear,r6900-v2|\
+	netgear,r7200|\
+	netgear,r7450|\
 	netgear,wac104|\
 	netgear,wac124|\
 	netis,wf2881|\
@@ -82,7 +89,8 @@ platform_do_upgrade() {
 		;;
 	iodata,wn-ax1167gr2|\
 	iodata,wn-ax2033gr|\
-	iodata,wn-dx1167r)
+	iodata,wn-dx1167r|\
+	iodata,wn-dx2033gr)
 		iodata_mstc_upgrade_prepare "0xfe75"
 		nand_do_upgrade "$1"
 		;;

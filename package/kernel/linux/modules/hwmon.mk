@@ -43,20 +43,6 @@ endef
 
 $(eval $(call KernelPackage,hwmon-ad7418))
 
-define KernelPackage/hwmon-ads1015
-  TITLE:=Texas Instruments ADS1015
-  KCONFIG:= CONFIG_SENSORS_ADS1015
-  FILES:= $(LINUX_DIR)/drivers/hwmon/ads1015.ko
-  AUTOLOAD:=$(call AutoLoad,60,ads1015)
-  $(call AddDepends/hwmon,+kmod-i2c-core)
-endef
-
-define KernelPackage/hwmon-ads1015/description
- Kernel module for Texas Instruments ADS1015 Analog-to-Digital converter
-endef
-
-$(eval $(call KernelPackage,hwmon-ads1015))
-
 define KernelPackage/hwmon-adt7410
   TITLE:=ADT7410 monitoring support
   KCONFIG:= \
@@ -150,6 +136,21 @@ define KernelPackage/hwmon-f71882fg/description
 endef
 
 $(eval $(call KernelPackage,hwmon-f71882fg))
+
+
+define KernelPackage/hwmon-g762
+  TITLE:=G762/G763 fan speed PWM controller support
+  KCONFIG:=CONFIG_SENSORS_G762
+  FILES:=$(LINUX_DIR)/drivers/hwmon/g762.ko
+  AUTOLOAD:=$(call AutoProbe,g762)
+  $(call AddDepends/hwmon,+kmod-i2c-core)
+endef
+
+define KernelPackage/hwmon-g762/description
+ Kernel module for Global Mixed-mode Technology Inc G762 and G763 fan speed PWM controller chips.
+endef
+
+$(eval $(call KernelPackage,hwmon-g762))
 
 
 define KernelPackage/hwmon-ina209
