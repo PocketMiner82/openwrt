@@ -1269,6 +1269,24 @@ endef
 $(eval $(call KernelPackage,net-selftests))
 
 
+define KernelPackage/qca8k
+  SUBMENU:=$(NETWORK_DEVICES_MENU)
+  TITLE:=QCA8k device support
+  KCONFIG:= \
+	CONFIG_NET_DSA_QCA8K \
+	CONFIG_NET_DSA_TAG_QCA=y \
+	CONFIG_REGMAP=y
+  FILES:=$(LINUX_DIR)/drivers/net/dsa/qca8k.ko
+  AUTOLOAD:=$(call AutoProbe,qca8k)
+endef
+
+define KernelPackage/qca8k/description
+  This driver supports the qca8k based switches.
+endef
+
+$(eval $(call KernelPackage,qca8k))
+
+
 define KernelPackage/qlcnic
   SUBMENU:=$(NETWORK_DEVICES_MENU)
   DEPENDS:=@PCI_SUPPORT +kmod-hwmon-core

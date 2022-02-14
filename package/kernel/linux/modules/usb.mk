@@ -1730,6 +1730,8 @@ define KernelPackage/usb3
 	+TARGET_bcm53xx:kmod-phy-bcm-ns-usb3 \
 	+TARGET_ramips_mt7621:kmod-usb-xhci-mtk \
 	+TARGET_apm821xx_nand:kmod-usb-xhci-pci-renesas \
+	+TARGET_lantiq_xrx200_DEVICE_avm_fritz5490:kmod-usb-xhci-pci-renesas \
+	+TARGET_lantiq_xrx200_DEVICE_avm_fritz5490-micron:kmod-usb-xhci-pci-renesas \
 	+TARGET_lantiq_xrx200_DEVICE_avm_fritz7490:kmod-usb-xhci-pci-renesas \
 	+TARGET_lantiq_xrx200_DEVICE_avm_fritz7490-micron:kmod-usb-xhci-pci-renesas \
 	+TARGET_mvebu_cortexa9:kmod-usb-xhci-pci-renesas
